@@ -15,7 +15,5 @@ int main(){
         else cout<<sol[i]<<" ";
     }
 
-
-
     return 0;
 }
