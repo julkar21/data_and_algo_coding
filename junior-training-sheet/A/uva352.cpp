@@ -7,8 +7,8 @@ int n;
 bool valid(int i,int j){
     return i>=0 && j>=0 && i<n && j<n;
 }
-int dx[8] = {0,0,1,-1,1,-1,1,-1};
-int dy[8] = {1,-1,0,0,1,-1,-1,1};
+int dx[8] = {0, 0, 1,-1,1,-1, 1,-1};
+int dy[8] = {1,-1, 0, 0,1,-1,-1, 1};
 void dfs(int i,int j){
     if(seen[i][j])return;
     seen[i][j]=1;
