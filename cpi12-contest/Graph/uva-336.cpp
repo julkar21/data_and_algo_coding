@@ -1,77 +1,80 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define N 310
-vector<int>graph[N];
-int cs=1,nc,vis[N],lvl[N];
-queue<int>q;
+
+map<int,int> visited;
 
 
-void clr (){
-    memset(vis,0,sizeof vis);
-    memset(lvl,0,sizeof lvl);
-}
+void bfs(int source,map< int,vector< int > >G){
 
-void bfs(int node,int ttl){
-    q.push(node);
-    lvl[node]=0;
-    vis[node]=1;
+    queue<int>q;
+    q.push(source);
+    visited[source] = 0;
     while(!q.empty()){
         int par = q.front();
         q.pop();
-        for(int child:graph[par]){
-            if(!vis[child]&&lvl[par]+1<=ttl){
-                lvl[child]=lvl[par]+1;
+        for(int i=0;i<G[par].size();i++){
+            int child = G[par][i];
+            if(!visited.count(child)){
+                visited[child]=visited[par]+1;
                 q.push(child);
-                vis[child]=1;
             }
         }
-    }
-//    cout<<"Case "<<cs++<<": "<<(s.size()-cnt)<<" nodes not reachable from node "<<node<<" with TTL = "<<ttl<<"."<<endl;
-//    clr();
-}
-
-void nodeToFar() {
-    clr();
-    map<int,int> m;
-    int id=1;
-    while(nc--){
-        int u,v;
-        cin>>u>>v;
-        if(!m[u]){
-            m[u]=id;
-            id++;
-            cout<<"id : "<<id<<endl;
-        }
-        if(!m[v]){
-            m[v]=id;
-            id++;
-            cout<<"id : "<<id<<endl;
-        }
-        cout<<"m[u] : "<<m[u]<<endl;
-        cout<<"m[v] : "<<m[v]<<endl;
     }
 }
 
 int main(){
-    cin>>nc;
-    nodeToFar();
-//    while(cin>>n && n!=0){
-//        clr();
-//        for(int i=0;i<N;i++) graph[i].resize(0);
-//        s.clear();
-//        for(int i=0;i<n;i++){
-//            int v1,v2;
-//            cin>>v1>>v2;
-//            s.insert(v1);
-//            s.insert(v2);
-//            graph[v1].push_back(v2);
-//            graph[v2].push_back(v1);
-//        }
-//        int node,ttl;
-//        while(cin>>node>>ttl){
-//            if(node==0&&ttl==0)break;
-//            bfs(node,ttl);
-//        }
-//    }
+    int edges, cases=0;
+    while(scanf("%d",&edges)==1 & edges!=0){
+        map< int,vector< int > >G;
+        for(int i=0; i<edges; i++)
+        {
+            int x, y;
+            scanf("%d %d", &x, &y);
+            G[x].push_back(y);
+            G[y].push_back(x);
+        }
+
+        /*map< int,vector< int > >::iterator it = G.begin();
+        while(it != G.end()){
+            cout<<it->first<<" "<<endl;
+            for(int i=0; i<G[it->first].size(); i++)
+            {
+               cout<<G[it->first][i]<< " ";
+            }
+            cout<<endl;
+             ++it;
+        }
+        */
+        int ttl, source;
+        while(scanf("%d %d", &source, &ttl)==2)
+        {
+            if(source==0 && ttl==0) break;
+            map< int, int>::iterator it;
+            visited.clear();
+            bfs(source,G);
+            int count=0;
+            for(it=visited.begin(); it!=visited.end();++it)
+            {
+                if((*it).second>ttl){
+                    ++count;
+                }
+            }
+            //cout<<G.size()<<' '<<visited.size()<<endl;
+            count = count + G.size()-visited.size();
+            printf("Case %d: %d nodes not reachable from node %d with TTL = %d.\n",++cases,count, source, ttl);
+        }
+    }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
